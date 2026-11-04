@@ -36,6 +36,12 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     steps:
+      # The torch and CUDA layers don't fit in the runner's default free space.
+      - uses: jlumbroso/free-disk-space@ceedf095f4ec1a097402bc6bd80831f2e1a6fde6 # v2.0.0
+        with:
+          tool-cache: false
+          docker-images: true
+          swap-storage: true
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
