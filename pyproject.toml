@@ -1,0 +1,47 @@
+[project]
+name = "decider-server"
+version = "0.1.0"
+description = "HTTP API for pplx-decider Flash"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    # Exact pins from the vendored library's requirements.txt.
+    "torch==2.14.0",
+    "torchvision==0.29.0",
+    "transformers==5.17.0",
+    "safetensors==0.8.0",
+    "pillow==12.3.0",
+    "huggingface-hub==1.31.0",
+    "fastapi>=0.141",
+    "uvicorn>=0.52",
+    "pydantic-settings>=2",
+    "prometheus-client>=0.22",
+]
+
+[dependency-groups]
+dev = ["pytest", "httpx", "ruff"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/decider_server", "src/pplx_decider"]
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu130", marker = "sys_platform == 'linux'" }]
+torchvision = [{ index = "pytorch-cu130", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 120
+extend-exclude = ["src/pplx_decider"]
